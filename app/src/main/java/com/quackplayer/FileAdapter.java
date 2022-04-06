@@ -39,7 +39,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         holder.duration.setText(selectedFile.getDuration());
 
         if(selectedFile.isPlaying())
-            holder.rootLayout.setBackgroundResource(R.drawable.bg_purple);
+            holder.rootLayout.setBackgroundResource(R.drawable.background_pink);
         else
             holder.rootLayout.setBackgroundResource(R.drawable.background_blue);
 
