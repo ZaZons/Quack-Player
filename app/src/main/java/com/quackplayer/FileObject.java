@@ -2,12 +2,12 @@ package com.quackplayer;
 
 import android.net.Uri;
 
-public class FilesList {
+public class FileObject {
     private boolean isPlaying;
     private final String title, artist, duration;
     private final Uri fileUri;
 
-    public FilesList(boolean isPlaying, String title, String artist, String duration, Uri fileUri) {
+    public FileObject(boolean isPlaying, String title, String artist, String duration, Uri fileUri) {
         this.isPlaying = isPlaying;
         this.title = title;
         this.artist = artist;
@@ -35,3 +35,7 @@ public class FilesList {
         return fileUri;
     }
 }
+
+
+
+

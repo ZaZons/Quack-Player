@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView mainRecyclerView;
 
-    final List<FilesList> filesList = new ArrayList<>();
+    final List<FileObject> fileObject = new ArrayList<>();
     FileAdapter fileAdapter;
 
     @Override
@@ -74,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
                     Uri getFileUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorId);
 
                     //construir um objeto de cada ficheiro com as propriedades adquiridas provisoriamente
-                    final FilesList file = new FilesList(false, getFileName, getArtistName, generateTime(getDuration), getFileUri);
+                    final FileObject file = new FileObject(false, getFileName, getArtistName, generateTime(getDuration), getFileUri);
 
                     //adicionar o objeto a lista
-                    filesList.add(file);
+                    fileObject.add(file);
                 } while(cursor.moveToNext());
 
                 //criar e adicionar o adaptador ao recyclerView
-                fileAdapter = new FileAdapter(filesList, MainActivity.this);
+                fileAdapter = new FileAdapter(fileObject, MainActivity.this);
                 mainRecyclerView.setAdapter(fileAdapter);
 
                 Toast.makeText(this, fileAdapter.getItemCount() + " Songs found", Toast.LENGTH_SHORT).show();
@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         String stringedMinutes = String.format(Locale.ENGLISH, "%02d", minutes);
         stringedTime += stringedMinutes + ":" + stringedSeconds;
 
-        Log.d("f:", stringedTime);
         return stringedTime;
     }
 

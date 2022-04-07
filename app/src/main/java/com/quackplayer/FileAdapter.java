@@ -15,11 +15,11 @@ import java.util.List;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder> {
 
-    private final List<FilesList> filesList;
+    private final List<FileObject> fileObject;
     private final SelectFileListener selectFileListener;
 
-    public FileAdapter(List<FilesList> filesList, Context context) {
-        this.filesList = filesList;
+    public FileAdapter(List<FileObject> fileObject, Context context) {
+        this.fileObject = fileObject;
         this.selectFileListener = ((SelectFileListener)context);
     }
 
@@ -32,7 +32,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
-        FilesList selectedFile = filesList.get(position);
+        FileObject selectedFile = fileObject.get(position);
 
         holder.title.setText(selectedFile.getTitle());
         holder.artist.setText(selectedFile.getArtist());
@@ -48,7 +48,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
 
     @Override
     public int getItemCount() {
-        return filesList.size();
+        return fileObject.size();
     }
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
