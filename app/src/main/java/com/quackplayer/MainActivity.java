@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.ui.StyledPlayerControlView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -41,18 +42,33 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //inicializar e configurar o mainRecylerViewer
+        //Pedir permissões
+        requestPermissions();
+    }
+
+    void start() {
+        StyledPlayerControlView playerView = findViewById(R.id.playerView);
+
+        //Inicializar e configurar o mainRecylerView
         mainRecyclerView = findViewById(R.id.mainRecyclerView);
         mainRecyclerView.setHasFixedSize(false);
         mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //pedir permissoes
-        requestPermissions();
+        findFiles();
+
+        //Inicializar o player
+        //Associar à view
+        //Preparar
+        player = new ExoPlayer.Builder(this).build();
+        playerView.setPlayer(player);
+        player.prepare();
+
+
     }
 
     void findFiles() {
         try {
-            //usar a media store para encontrar os ficheiros
+            //Usar a MediaStore para encontrar os ficheiros
             ContentResolver contentResolver = getApplicationContext().getContentResolver();
 
             Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -70,21 +86,21 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                 do {
                     long cursorId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
 
-                    //get propriedades das musicas para adicionar a lista
+                    //Get propriedades dos ficheiros para adicionar a lista
                     String getArtistName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
                     String getDuration = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DURATION));
                     String getFileName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
 
                     Uri getFileUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorId);
 
-                    //construir um objeto de cada ficheiro com as propriedades adquiridas provisoriamente
+                    //Construir um objeto de cada ficheiro com as propriedades adquiridas provisoriamente
                     final FileObject file = new FileObject(false, getFileName, getArtistName, generateTime(getDuration), getFileUri);
 
-                    //adicionar o objeto a lista
+                    //Adicionar o objeto a lista
                     filesList.add(file);
                 } while(cursor.moveToNext());
 
-                //criar e adicionar o adaptador ao recyclerView
+                //Criar e adicionar o adaptador ao mainRecyclerView
                 fileAdapter = new FileAdapter(filesList, MainActivity.this);
                 mainRecyclerView.setAdapter(fileAdapter);
 
@@ -123,22 +139,23 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
     @Override
     public void onSelected(int position) {
-        //get o mediaItem do objeto selecionado
+        //Get o mediaItem do objeto selecionado
         FileObject firstItem = filesList.get(position);
         MediaItem mediaItem = firstItem.getMediaItem();
 
-        //se o mediaItem q selecionar ja estiver a ser tocado no player, entao ele nao faz nada
+        //Se o mediaItem q selecionar ja estiver a ser tocado no player
+        //então a função retorna
         if(player.getCurrentMediaItem() == mediaItem)
             return;
 
-        //reset ao player
+        //Parar o player e limpar a queue
         player.stop();
         player.clearMediaItems();
 
+        //Adicionar à queue o item selecionado e os restantes depois
+        //Quando chegar ao fim da lista vai para o primeiro item e adiciona
+        //os items seguintes até voltar ao primeiro adicionado
         player.addMediaItem(mediaItem);
-
-        //por os itens todos da lista em queue
-        //quando o loop chega ao ultimo item volta para o primeiro da lista, e quando chega ao item selecionado sai do loop
         for(int i = position + 1; i < fileAdapter.getItemCount() + 1; i++) {
             if(i == fileAdapter.getItemCount())
                 i = 0;
@@ -149,6 +166,11 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
             MediaItem nextMediaItem = filesList.get(i).getMediaItem();
             player.addMediaItem(nextMediaItem);
         }
+
+        firstItem.setPlaying(true);
+        fileAdapter.notifyDataSetChanged();
+
+        player.play();
     }
 
     void requestPermissions() {
@@ -158,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                         Toast.makeText(getApplicationContext(), "Permission granted", Toast.LENGTH_SHORT).show();
-                        findFiles();
+                        start();
                     }
 
                     @Override
