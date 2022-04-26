@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
             if(cursor == null) {
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
             } else if (!cursor.moveToNext()) {
-                Toast.makeText(this, "No music found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No files found", Toast.LENGTH_SHORT).show();
             } else {
                 cursor.moveToFirst();
                 do {
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                 fileAdapter = new FileAdapter(filesList, MainActivity.this);
                 mainRecyclerView.setAdapter(fileAdapter);
 
-                Toast.makeText(this, fileAdapter.getItemCount() + " Songs found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, fileAdapter.getItemCount() + " files found", Toast.LENGTH_SHORT).show();
 
                 cursor.close();
             }
