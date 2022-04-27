@@ -48,7 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:layout_marginBottom="10dp"
-            app:show_timeout="0"/>
+            app:show_timeout="0"
+            app:controller_layout_id="@layout/exo_playback_control_view"/>
 
         <LinearLayout
             android:layout_width="match_parent"

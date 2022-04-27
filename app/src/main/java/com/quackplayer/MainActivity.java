@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         player = new ExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
         player.prepare();
-
-
     }
 
     void findFiles() {
