@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     CardView playPauseBtn;
     CardView skipNextBtn;
 
+    ImageView playPauseImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     }
 
     void start() {
-        skipPreviousBtn = findViewById(R.id.previousBtnCard);
-        playPauseBtn = findViewById(R.id.playPauseCard);
-        skipNextBtn = findViewById(R.id.nextBtnCard);
+        skipPreviousBtn = findViewById(R.id.previousBtn);
+        playPauseBtn = findViewById(R.id.playPauseBtn);
+        skipNextBtn = findViewById(R.id.nextBtn);
 
         StyledPlayerControlView playerView = findViewById(R.id.playerView);
 
@@ -70,6 +73,38 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         //Preparar
         player = new ExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
+
+        controls();
+    }
+
+    void controls() {
+        //skip to next music
+        skipNextBtn.setOnClickListener(v -> {
+            if(player.hasNextMediaItem())
+                player.seekToNextMediaItem();
+
+            if(!player.isPlaying())
+                player.play();
+        });
+
+        //play or pause
+        playPauseBtn.setOnClickListener(v -> {
+            if(player.isPlaying())
+                player.pause();
+            else
+                player.play();
+        });
+
+        //go to the previous music
+        skipPreviousBtn.setOnClickListener(v -> {
+            long millisecondsToGoBack = 1500;
+            if(player.getCurrentPosition() >= millisecondsToGoBack) {
+                player.seekTo(0);
+            } else {
+                if(player.hasPreviousMediaItem())
+                    player.seekToPreviousMediaItem();
+            }
+        });
     }
 
     void findFiles() {
