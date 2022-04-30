@@ -1,6 +1,7 @@
 package com.quackplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
     static ExoPlayer player;
 
+    CardView skipPreviousBtn;
+    CardView playPauseBtn;
+    CardView skipNextBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     }
 
     void start() {
+        skipPreviousBtn = findViewById(R.id.previousBtnCard);
+        playPauseBtn = findViewById(R.id.playPauseCard);
+        skipNextBtn = findViewById(R.id.nextBtnCard);
+
         StyledPlayerControlView playerView = findViewById(R.id.playerView);
 
         //Inicializar e configurar o mainRecylerView
@@ -61,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         //Preparar
         player = new ExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
-        player.prepare();
     }
 
     void findFiles() {
@@ -168,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         firstItem.setPlaying(true);
         fileAdapter.notifyDataSetChanged();
 
+        player.prepare();
         player.play();
     }
 
