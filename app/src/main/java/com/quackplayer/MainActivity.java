@@ -151,8 +151,10 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
         //Se o mediaItem q selecionar ja estiver a ser tocado no player
         //então a função retorna
-        if(player.getCurrentMediaItem() == mediaItem)
+        if(player.getCurrentMediaItem() == mediaItem) {
+            player.seekTo(0);
             return;
+        }
 
         //Parar o player e limpar a queue
         player.stop();
