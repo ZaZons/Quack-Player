@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         playPauseBtn = findViewById(R.id.playPauseBtn);
         skipNextBtn = findViewById(R.id.nextBtn);
 
+        playPauseImg = findViewById(R.id.playPauseImg);
+
         loopBtn = findViewById(R.id.loopBtn);
         repeatOneIndicator = findViewById(R.id.repeatOneIndicator);
         shuffleBtn = findViewById(R.id.shuffleBtn);
