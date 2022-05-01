@@ -2,22 +2,26 @@ package com.quackplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.StyledPlayerControlView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -45,6 +49,15 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
     ImageView playPauseImg;
 
+    FileObject currentPlayingObject;
+
+    CardView loopBtn;
+    CardView repeatOneIndicator;
+    CardView shuffleBtn;
+
+    int quack_blue;
+    int quack_pink;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +71,13 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         skipPreviousBtn = findViewById(R.id.previousBtn);
         playPauseBtn = findViewById(R.id.playPauseBtn);
         skipNextBtn = findViewById(R.id.nextBtn);
+
+        loopBtn = findViewById(R.id.loopBtn);
+        repeatOneIndicator = findViewById(R.id.repeatOneIndicator);
+        shuffleBtn = findViewById(R.id.shuffleBtn);
+
+        quack_blue = ContextCompat.getColor(getApplicationContext(), R.color.quack_blue);
+        quack_pink = ContextCompat.getColor(getApplicationContext(), R.color.quack_pink);
 
         StyledPlayerControlView playerView = findViewById(R.id.playerView);
 
@@ -75,27 +95,12 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         playerView.setPlayer(player);
 
         controls();
+
+        listener();
     }
 
     void controls() {
-        //skip to next music
-        skipNextBtn.setOnClickListener(v -> {
-            if(player.hasNextMediaItem())
-                player.seekToNextMediaItem();
-
-            if(!player.isPlaying())
-                player.play();
-        });
-
-        //play or pause
-        playPauseBtn.setOnClickListener(v -> {
-            if(player.isPlaying())
-                player.pause();
-            else
-                player.play();
-        });
-
-        //go to the previous music
+        //Reproduzir o MediaItem anterior
         skipPreviousBtn.setOnClickListener(v -> {
             long millisecondsToGoBack = 1500;
             if(player.getCurrentPosition() >= millisecondsToGoBack) {
@@ -103,6 +108,110 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
             } else {
                 if(player.hasPreviousMediaItem())
                     player.seekToPreviousMediaItem();
+            }
+        });
+
+        //Pausar e retomar a reprodução da queue
+        playPauseBtn.setOnClickListener(v -> {
+            if(player.isPlaying())
+                player.pause();
+            else
+                player.play();
+        });
+
+        //Reproduzir o próximo MediaItem
+        skipNextBtn.setOnClickListener(v -> {
+            if(player.hasNextMediaItem())
+                player.seekToNextMediaItem();
+        });
+
+        //Alternar entre os diferentes tipos de loop (um MediaItem, queue ou nenhum)
+        loopBtn.setOnClickListener(v -> {
+            int repeatMode = player.getRepeatMode();
+
+            switch(repeatMode) {
+                case Player.REPEAT_MODE_OFF:
+                    player.setRepeatMode(Player.REPEAT_MODE_ALL);
+                    break;
+
+                case Player.REPEAT_MODE_ONE:
+                    player.setRepeatMode(Player.REPEAT_MODE_OFF);
+                    break;
+
+                case Player.REPEAT_MODE_ALL:
+                    player.setRepeatMode(Player.REPEAT_MODE_ONE);
+                    break;
+            }
+        });
+
+        //Ativar e desativar os modos de queue aleatória
+        shuffleBtn.setOnClickListener(v ->
+            player.setShuffleModeEnabled(!player.getShuffleModeEnabled())
+        );
+    }
+
+    void listener() {
+        player.addListener(new ExoPlayer.Listener() {
+            //Atualização da UI quando o MediaItem é alterado
+            @Override
+            public void onMediaItemTransition(MediaItem newMediaItem, @com.google.android.exoplayer2.Player.MediaItemTransitionReason int reason) {
+                if(currentPlayingObject != null)
+                    currentPlayingObject.setPlaying(false);
+
+                for(FileObject fileObject : filesList) {
+                    if(fileObject.getMediaItem() == newMediaItem)
+                        currentPlayingObject = fileObject;
+                }
+
+                if(currentPlayingObject != null) {
+                    currentPlayingObject.setPlaying(true);
+                    fileAdapter.notifyDataSetChanged();
+                }
+
+                if(!player.isPlaying())
+                    player.play();
+            }
+
+            //Atualizar a imagem do botão de pausar e retomar a reprodução
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+                if(isPlaying)
+                    playPauseImg.setImageResource(R.drawable.ic_pause);
+                else
+                    playPauseImg.setImageResource(R.drawable.ic_play_arrow);
+            }
+
+            //Atualizar o botão de repetição
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+                int visibility = repeatOneIndicator.getVisibility();
+                ColorStateList cardColor = loopBtn.getCardBackgroundColor();
+
+                switch(repeatMode) {
+                    case Player.REPEAT_MODE_OFF:
+                        repeatOneIndicator.setVisibility(View.INVISIBLE);
+                        loopBtn.setCardBackgroundColor(quack_blue);
+                        break;
+
+                    case Player.REPEAT_MODE_ONE:
+                        repeatOneIndicator.setVisibility(View.VISIBLE);
+                        loopBtn.setCardBackgroundColor(quack_pink);
+                        break;
+
+                    case Player.REPEAT_MODE_ALL:
+                        repeatOneIndicator.setVisibility(View.INVISIBLE);
+                        loopBtn.setCardBackgroundColor(quack_pink);
+                        break;
+                }
+            }
+
+            //Atualizar o botão de queue aleatória
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+                if(shuffleModeEnabled)
+                    shuffleBtn.setCardBackgroundColor(quack_pink);
+                else
+                    shuffleBtn.setCardBackgroundColor(quack_blue);
             }
         });
     }
@@ -239,3 +348,12 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                 }).check();
     }
 }
+
+
+
+
+
+
+
+
+

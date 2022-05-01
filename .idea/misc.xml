@@ -13,8 +13,12 @@
         <entry key="..\:/a34080/Program Files/Android/AndroidStudioProjects/QuackPlayer/app/src/main/res/drawable/ic_skip_previous.xml" value="0.1175" />
         <entry key="..\:/a34080/Program Files/Android/AndroidStudioProjects/QuackPlayer/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/a34080/Program Files/Android/AndroidStudioProjects/QuackPlayer/app/src/main/res/layout/files_adapter_layout.xml" value="0.33" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_loop.xml" value="0.4205" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_pause.xml" value="0.4205" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_play_arrow.xml" value="0.4205" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_shuffle.xml" value="0.4205" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/progress_bar_scrubber.xml" value="0.22" />
-        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/activity_main.xml" value="0.5322916666666667" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/exo_playback_control_view.xml" value="0.5322916666666667" />
       </map>
     </option>
