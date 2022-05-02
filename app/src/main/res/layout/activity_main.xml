@@ -74,7 +74,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginEnd="20dp"
-                        app:cardBackgroundColor="@color/quack_blue"
+                        app:cardBackgroundColor="?attr/colorPrimary"
                         app:cardCornerRadius="15dp">
 
                         <ImageView
@@ -93,11 +93,10 @@
                     android:layout_alignEnd="@+id/loopLayout"
                     android:layout_marginEnd="11dp"
                     android:layout_marginTop="3dp"
-                    app:cardBackgroundColor="@color/quack_blue"
+                    app:cardBackgroundColor="?attr/colorPrimary"
                     app:cardCornerRadius="30dp"
                     android:visibility="invisible">
 
-                    <!--tenho de na main activity fazer isto aparecer quando tiver ligado-->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -162,7 +161,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
-                app:cardBackgroundColor="@color/quack_blue"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="15dp">
 
                 <ImageView

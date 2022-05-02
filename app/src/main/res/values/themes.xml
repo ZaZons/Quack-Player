@@ -2,11 +2,11 @@
     <!-- Tema claro -->
     <style name="Theme.QuackPlayer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/quack_blue</item>
+        <item name="android:colorPrimary">@color/quack_blue</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/quack_pink</item>
+        <item name="android:colorSecondary">@color/quack_pink</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar Color -->

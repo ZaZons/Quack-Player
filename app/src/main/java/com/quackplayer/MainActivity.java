@@ -10,11 +10,15 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -55,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     CardView repeatOneIndicator;
     CardView shuffleBtn;
 
-    int quack_blue;
-    int quack_pink;
+    int colorPrimary;
+    int colorSecondary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +82,11 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         repeatOneIndicator = findViewById(R.id.repeatOneIndicator);
         shuffleBtn = findViewById(R.id.shuffleBtn);
 
-        quack_blue = ContextCompat.getColor(getApplicationContext(), R.color.quack_blue);
-        quack_pink = ContextCompat.getColor(getApplicationContext(), R.color.quack_pink);
+        //Obter as cores
+        int attrs[] = {android.R.attr.colorPrimary, R.attr.colorSecondary};
+        TypedArray colors = obtainStyledAttributes(R.style.Theme_QuackPlayer, attrs);
+        colorPrimary = colors.getColor(0, 0);
+        colorSecondary = colors.getColor(1, 0);
 
         StyledPlayerControlView playerView = findViewById(R.id.playerView);
 
@@ -96,8 +103,10 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         player = new ExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
 
+        //Configurar os controlos da aplicação
         controls();
 
+        //Configurar o listener do player
         listener();
     }
 
@@ -146,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
             }
         });
 
-        //Ativar e desativar os modos de queue aleatória
+        //Ativar e desativar o shuffle
         shuffleBtn.setOnClickListener(v ->
             player.setShuffleModeEnabled(!player.getShuffleModeEnabled())
         );
@@ -192,17 +201,17 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                 switch(repeatMode) {
                     case Player.REPEAT_MODE_OFF:
                         repeatOneIndicator.setVisibility(View.INVISIBLE);
-                        loopBtn.setCardBackgroundColor(quack_blue);
+                        loopBtn.setCardBackgroundColor(colorPrimary);
                         break;
 
                     case Player.REPEAT_MODE_ONE:
                         repeatOneIndicator.setVisibility(View.VISIBLE);
-                        loopBtn.setCardBackgroundColor(quack_pink);
+                        loopBtn.setCardBackgroundColor(colorSecondary);
                         break;
 
                     case Player.REPEAT_MODE_ALL:
                         repeatOneIndicator.setVisibility(View.INVISIBLE);
-                        loopBtn.setCardBackgroundColor(quack_pink);
+                        loopBtn.setCardBackgroundColor(colorSecondary);
                         break;
                 }
             }
@@ -211,9 +220,9 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
                 if(shuffleModeEnabled)
-                    shuffleBtn.setCardBackgroundColor(quack_pink);
+                    shuffleBtn.setCardBackgroundColor(colorSecondary);
                 else
-                    shuffleBtn.setCardBackgroundColor(quack_blue);
+                    shuffleBtn.setCardBackgroundColor(colorPrimary);
             }
         });
     }
