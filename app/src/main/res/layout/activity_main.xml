@@ -36,7 +36,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp" />
 
-    <!--Barra onde vai ter os controlos e a barra de progresso-->
+    <!--Barra que tem os controlos e a barra de progresso-->
     <LinearLayout
         android:id="@+id/controlBar"
         android:layout_width="match_parent"

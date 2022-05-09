@@ -2,11 +2,13 @@
     <!-- Tema claro -->
     <style name="Theme.QuackPlayer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Cor primária -->
-        <item name="android:colorPrimary">@color/quack_blue</item>
+        <item name="colorPrimary">@color/quack_blue</item>
         <!-- Cor secundária -->
-        <item name="android:colorSecondary">@color/quack_pink</item>
+        <item name="colorSecondary">@color/quack_pink</item>
         <!-- Cor do fundo -->
         <item name="backgroundColor">@color/white</item>
+        <!-- Cor da status bar -->
+        <item name="android:statusBarColor">@color/black</item>
         <!-- Cor do texto, aplicada automaticamente -->
         <item name="android:textColor">@color/black</item>
     </style>
