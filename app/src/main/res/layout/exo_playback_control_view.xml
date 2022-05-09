@@ -23,6 +23,7 @@
         android:background="@android:color/transparent"
         app:bar_height="3dp"
         app:played_color="?attr/colorSecondary"
+        app:buffered_color="#d1d1d2"
         app:scrubber_drawable="@drawable/progress_bar_scrubber"
         app:unplayed_color="#d1d1d2"
         style="@style/Widget.AppCompat.SeekBar"/>

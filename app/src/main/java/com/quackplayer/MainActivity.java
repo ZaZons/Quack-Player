@@ -343,7 +343,6 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        Toast.makeText(getApplicationContext(), "Permission granted", Toast.LENGTH_SHORT).show();
                         start();
                     }
 
