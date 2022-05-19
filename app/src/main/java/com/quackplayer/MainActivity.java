@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
     RecyclerView mainRecyclerView;
 
-    final List<FileObject> filesList = new ArrayList<>();
+    static final List<FileObject> filesList = new ArrayList<>();
     FileAdapter fileAdapter;
 
     static ExoPlayer player;
@@ -239,6 +239,37 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     }
 
     void notification() {
+        CharSequence name = "Playback";
+        String channelId = "playback_channel";
+        String description = "Playback notification";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+        NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+        channel.setDescription(description);
+
+        NotificationManager notificationChannelManager = getSystemService(NotificationManager.class);
+        notificationChannelManager.createNotificationChannel(channel);
+
+        DescriptionAdapter descriptionAdapter = new DescriptionAdapter();
+
+        playerNotificationManager =
+                new PlayerNotificationManager.Builder(getApplicationContext(), 1, channelId)
+                        .setMediaDescriptionAdapter(descriptionAdapter)
+                        .setNextActionIconResourceId(R.drawable.ic_skip_next)
+                        .setPauseActionIconResourceId(R.drawable.ic_pause)
+                        .setPreviousActionIconResourceId(R.drawable.ic_skip_previous)
+                        .setPlayActionIconResourceId(R.drawable.ic_play_arrow)
+                        .setSmallIconResourceId(R.mipmap.ic_launcher)
+                        .build();
+
+        playerNotificationManager.setUseNextActionInCompactView(true);
+        playerNotificationManager.setUsePreviousActionInCompactView(true);
+        playerNotificationManager.setUseFastForwardAction(false);
+        playerNotificationManager.setUseRewindAction(false);
+        playerNotificationManager.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        playerNotificationManager.setColor(colorPrimary);
+        playerNotificationManager.setPriority(PRIORITY_HIGH);
+        playerNotificationManager.setPlayer(player);
     }
 
     void findFiles() {
@@ -313,6 +344,13 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.setForegroundMode(false);
+playerNotificationManager.setPlayer(null);
+    }
+
+    @Override
     public void onSelected(int position) {
         //Get o mediaItem do objeto selecionado
         FileObject firstItem = filesList.get(position);
@@ -349,6 +387,10 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
         player.prepare();
         player.play();
+    }
+
+    public static List<FileObject> getList() {
+        return filesList;
     }
 
     void requestPermissions() {
