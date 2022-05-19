@@ -14,6 +14,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -22,6 +24,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -31,6 +34,7 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.StyledPlayerControlView;
 import com.karumi.dexter.Dexter;
@@ -65,8 +69,10 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     CardView repeatOneIndicator;
     CardView shuffleBtn;
 
-    int colorPrimary;
+    static int colorPrimary;
     int colorSecondary;
+
+    MediaSessionCompat mediaSession;
 
     PlayerNotificationManager playerNotificationManager;
     @Override
@@ -117,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         listener();
 
         //Autorizar o player a tocar em segundo plano
-        player.setForegroundMode(true);
         notification();
     }
 
@@ -250,26 +255,14 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         NotificationManager notificationChannelManager = getSystemService(NotificationManager.class);
         notificationChannelManager.createNotificationChannel(channel);
 
-        DescriptionAdapter descriptionAdapter = new DescriptionAdapter();
+        mediaSession = new MediaSessionCompat(this, "media_session");
+        MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
+        mediaSessionConnector.setPlayer(player);
+        mediaSession.setActive(true);
 
-        playerNotificationManager =
-                new PlayerNotificationManager.Builder(getApplicationContext(), 1, channelId)
-                        .setMediaDescriptionAdapter(descriptionAdapter)
-                        .setNextActionIconResourceId(R.drawable.ic_skip_next)
-                        .setPauseActionIconResourceId(R.drawable.ic_pause)
-                        .setPreviousActionIconResourceId(R.drawable.ic_skip_previous)
-                        .setPlayActionIconResourceId(R.drawable.ic_play_arrow)
-                        .setSmallIconResourceId(R.mipmap.ic_launcher)
-                        .build();
-
-        playerNotificationManager.setUseNextActionInCompactView(true);
-        playerNotificationManager.setUsePreviousActionInCompactView(true);
-        playerNotificationManager.setUseFastForwardAction(false);
-        playerNotificationManager.setUseRewindAction(false);
-        playerNotificationManager.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        playerNotificationManager.setColor(colorPrimary);
-        playerNotificationManager.setPriority(PRIORITY_HIGH);
-        playerNotificationManager.setPlayer(player);
+        Context context = getApplicationContext();
+        Intent intent = new Intent(this, PlaybackService.class);
+        context.startForegroundService(intent);
     }
 
     void findFiles() {
@@ -347,7 +340,9 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     protected void onDestroy() {
         super.onDestroy();
         player.setForegroundMode(false);
-playerNotificationManager.setPlayer(null);
+        playerNotificationManager.setPlayer(null);
+        player = null;
+        mediaSession.setActive(false);
     }
 
     @Override
@@ -391,6 +386,14 @@ playerNotificationManager.setPlayer(null);
 
     public static List<FileObject> getList() {
         return filesList;
+    }
+
+    public static ExoPlayer getPlayer() {
+        return player;
+    }
+
+    public static int getColorPrimary() {
+        return colorPrimary;
     }
 
     void requestPermissions() {

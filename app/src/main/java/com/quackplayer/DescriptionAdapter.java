@@ -42,13 +42,6 @@ public class DescriptionAdapter implements PlayerNotificationManager.MediaDescri
     @Nullable
     @Override
     public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-//        int window = player.getCurrentMediaItemIndex();
-//        Bitmap largeIcon = getLargeIcon(window);
-//        if (largeIcon == null && getLargeIconUri(window) != null) {
-//            // load bitmap async
-//            loadBitmap(getLargeIconUri(window), callback);
-//            return getPlaceholderBitmap();
-//        }
         return null;
     }
 }
