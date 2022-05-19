@@ -1,12 +1,17 @@
 package com.quackplayer;
 
+import static androidx.core.app.NotificationCompat.PRIORITY_HIGH;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.res.ColorStateList;
@@ -26,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.StyledPlayerControlView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     int colorPrimary;
     int colorSecondary;
 
+    PlayerNotificationManager playerNotificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
         //Configurar o listener do player
         listener();
+
+        //Autorizar o player a tocar em segundo plano
+        player.setForegroundMode(true);
+        notification();
     }
 
     void controls() {
@@ -225,6 +236,9 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                     shuffleBtn.setCardBackgroundColor(colorPrimary);
             }
         });
+    }
+
+    void notification() {
     }
 
     void findFiles() {
