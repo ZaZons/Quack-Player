@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!--Definir a cor e o quão arredondados vão ser os vertices-->
-    <solid android:color="?attr/colorPrimary"/>
+    <solid android:color="?android:attr/colorPrimary"/>
     <corners android:radius="10dp"/>
 
 </shape>

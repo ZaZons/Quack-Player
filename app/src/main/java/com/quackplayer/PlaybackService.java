@@ -51,7 +51,7 @@ public class PlaybackService extends Service {
                             public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
                                 PlayerNotificationManager.NotificationListener.super.onNotificationPosted(notificationId, notification, ongoing);
                                 if(!ongoing) {
-                                    stopForeground(true);
+                                    stopService(intent);
                                 } else {
                                     startForeground(startId, notification);
                                 }
@@ -70,7 +70,6 @@ public class PlaybackService extends Service {
         playerNotificationManager.setUseFastForwardAction(false);
         playerNotificationManager.setUseRewindAction(false);
         playerNotificationManager.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        playerNotificationManager.setColor(MainActivity.getColorPrimary());
         playerNotificationManager.setColorized(false);
         playerNotificationManager.setPriority(PRIORITY_HIGH);
         playerNotificationManager.setPlayer(MainActivity.getPlayer());

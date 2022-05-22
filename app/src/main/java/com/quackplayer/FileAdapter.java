@@ -15,11 +15,11 @@ import java.util.List;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder> {
 
-    private final List<FileObject> fileObject;
+    private List<FileObject> filesList;
     private final SelectFileListener selectFileListener;
 
-    public FileAdapter(List<FileObject> fileObject, Context context) {
-        this.fileObject = fileObject;
+    public FileAdapter(List<FileObject> filesList, Context context) {
+        this.filesList = filesList;
         this.selectFileListener = ((SelectFileListener)context);
     }
 
@@ -32,7 +32,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
-        FileObject selectedFile = fileObject.get(position);
+        FileObject selectedFile = filesList.get(position);
 
         holder.title.setText(selectedFile.getTitle());
         holder.artist.setText(selectedFile.getArtist());
@@ -43,12 +43,12 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         else
             holder.rootLayout.setBackgroundResource(R.drawable.background_blue);
 
-        holder.rootLayout.setOnClickListener(v -> selectFileListener.onSelected(position));
+        holder.rootLayout.setOnClickListener(v -> selectFileListener.onSelected(selectedFile.getId()));
     }
 
     @Override
     public int getItemCount() {
-        return fileObject.size();
+        return filesList.size();
     }
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
@@ -67,4 +67,35 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
             duration = itemView.findViewById(R.id.duration);
         }
     }
+
+    public void filter(List<FileObject> filteredList) {
+        filesList = filteredList;
+        notifyDataSetChanged();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

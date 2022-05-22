@@ -1,11 +1,9 @@
 package com.quackplayer;
 
-import static androidx.core.app.NotificationCompat.PRIORITY_HIGH;
-
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,16 +15,17 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
+import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
     ImageView playPauseImg;
 
-    FileObject currentPlayingObject;
+    static FileObject currentPlayingObject;
 
     CardView loopBtn;
     CardView repeatOneIndicator;
@@ -71,13 +70,14 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
 
     static int colorPrimary;
     int colorSecondary;
+    int backgroundColor;
 
     MediaSessionCompat mediaSession;
-
     PlayerNotificationManager playerNotificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_QuackPlayer);
         setContentView(R.layout.activity_main);
 
         //Pedir permissões
@@ -96,10 +96,15 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         shuffleBtn = findViewById(R.id.shuffleBtn);
 
         //Obter as cores
-        int attrs[] = {android.R.attr.colorPrimary, R.attr.colorSecondary};
-        TypedArray colors = obtainStyledAttributes(R.style.Theme_QuackPlayer, attrs);
-        colorPrimary = colors.getColor(0, 0);
-        colorSecondary = colors.getColor(1, 0);
+//        int attrs[] = {android.R.attr.colorPrimary, R.attr.colorSecondary};
+//        TypedArray colors = obtainStyledAttributes(R.style.Theme_QuackPlayer, attrs);
+//        colorPrimary = colors.getColor(0, 0);
+//        colorSecondary = colors.getColor(1, 0);
+        TypedValue value = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.colorPrimary, value, true);
+        colorPrimary = value.data;
+        getTheme().resolveAttribute(android.R.attr.colorSecondary, value, true);
+        colorSecondary = value.data;
 
         StyledPlayerControlView playerView = findViewById(R.id.playerView);
 
@@ -122,8 +127,55 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         //Configurar o listener do player
         listener();
 
-        //Autorizar o player a tocar em segundo plano
-        notification();
+        //Ativar ActionBar custom
+        customActionBar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.actionSearch);
+        MenuItem searchItemBlack = menu.findItem(R.id.actionSearchBlack);
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
+            searchItem.setVisible(false);
+            searchItemBlack.setVisible(true);
+            searchItem = searchItemBlack;
+        }
+
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                List<FileObject> filteredList = new ArrayList<>();
+
+                for(FileObject item : filesList) {
+                    if(item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                        filteredList.add(item);
+                    }
+                }
+                fileAdapter.filter(filteredList);
+                return false;
+            }
+        });
+        return true;
+    }
+
+    void customActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setCustomView(R.layout.custom_action_bar);
+        }
     }
 
     void controls() {
@@ -281,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
             } else if (!cursor.moveToNext()) {
                 Toast.makeText(this, "No files found", Toast.LENGTH_SHORT).show();
             } else {
+                int id = 0;
                 cursor.moveToFirst();
                 do {
                     long cursorId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
@@ -293,10 +346,11 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                     Uri getFileUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorId);
 
                     //Construir um objeto de cada ficheiro com as propriedades adquiridas provisoriamente
-                    final FileObject file = new FileObject(false, getFileName, getArtistName, generateTime(getDuration), getFileUri);
+                    final FileObject file = new FileObject(id, false, getFileName, getArtistName, generateTime(getDuration), getFileUri);
 
                     //Adicionar o objeto a lista
                     filesList.add(file);
+                    id++;
                 } while(cursor.moveToNext());
 
                 //Criar e adicionar o adaptador ao mainRecyclerView
@@ -339,10 +393,7 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        player.setForegroundMode(false);
-        playerNotificationManager.setPlayer(null);
         player = null;
-        mediaSession.setActive(false);
     }
 
     @Override
@@ -366,8 +417,8 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         //Quando chegar ao fim da lista vai para o primeiro item e adiciona
         //os items seguintes até voltar ao primeiro adicionado
         player.addMediaItem(mediaItem);
-        for(int i = position + 1; i < fileAdapter.getItemCount() + 1; i++) {
-            if(i == fileAdapter.getItemCount())
+        for(int i = position + 1; i < filesList.size() + 1; i++) {
+            if(i == filesList.size())
                 i = 0;
 
             if(i == position)
@@ -380,20 +431,20 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
         firstItem.setPlaying(true);
         fileAdapter.notifyDataSetChanged();
 
+
+        //Autorizar o player a tocar em segundo plano
+        notification();
+
         player.prepare();
         player.play();
     }
 
-    public static List<FileObject> getList() {
-        return filesList;
+    public static FileObject getCurrentPlayingObject() {
+        return currentPlayingObject;
     }
 
     public static ExoPlayer getPlayer() {
         return player;
-    }
-
-    public static int getColorPrimary() {
-        return colorPrimary;
     }
 
     void requestPermissions() {
@@ -417,6 +468,22 @@ public class MainActivity extends AppCompatActivity implements SelectFileListene
                 }).check();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

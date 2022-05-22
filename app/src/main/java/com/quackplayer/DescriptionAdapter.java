@@ -11,19 +11,9 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 public class DescriptionAdapter implements PlayerNotificationManager.MediaDescriptionAdapter {
 
-    FileObject getFileObject(MediaItem currentMediaItem) {
-        FileObject currentPlayingObject = null;
-        for(FileObject m : MainActivity.getList()) {
-            if(m.getMediaItem() == currentMediaItem)
-                currentPlayingObject = m;
-        }
-        return currentPlayingObject;
-    }
-
     @Override
     public CharSequence getCurrentContentTitle(Player player) {
-        MediaItem currentMediaItem = player.getCurrentMediaItem();
-        return getFileObject(currentMediaItem).getTitle();
+        return MainActivity.getCurrentPlayingObject().getTitle();
     }
 
     @Nullable
@@ -35,8 +25,7 @@ public class DescriptionAdapter implements PlayerNotificationManager.MediaDescri
     @Nullable
     @Override
     public CharSequence getCurrentContentText(Player player) {
-        MediaItem currentMediaItem = player.getCurrentMediaItem();
-        return getFileObject(currentMediaItem).getArtist();
+        return MainActivity.getCurrentPlayingObject().getArtist();
     }
 
     @Nullable
