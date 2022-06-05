@@ -43,7 +43,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         else
             holder.rootLayout.setBackgroundResource(R.drawable.background_blue);
 
-        holder.rootLayout.setOnClickListener(v -> selectFileListener.onSelected(selectedFile.getId()));
+        holder.rootLayout.setOnClickListener(v -> selectFileListener.onSelected(selectedFile.getId(), filesList, this));
     }
 
     @Override

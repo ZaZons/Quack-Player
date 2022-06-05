@@ -53,7 +53,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginEnd="20dp"
-                        app:cardBackgroundColor="?android:attr/colorPrimary"
+                        app:cardBackgroundColor="?attr/colorPrimary"
                         app:cardCornerRadius="15dp">
 
                         <ImageView
@@ -72,7 +72,7 @@
                     android:layout_alignEnd="@+id/loopLayout"
                     android:layout_marginEnd="11dp"
                     android:layout_marginTop="3dp"
-                    app:cardBackgroundColor="?android:attr/colorPrimary"
+                    app:cardBackgroundColor="?attr/colorPrimary"
                     app:cardCornerRadius="30dp"
                     android:visibility="invisible">
 
@@ -92,7 +92,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="20dp"
-                app:cardBackgroundColor="?android:attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="15dp">
 
                 <ImageView
@@ -107,7 +107,7 @@
                 android:id="@+id/playPauseBtn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                app:cardBackgroundColor="?android:attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="40dp">
 
                 <ImageView
@@ -124,7 +124,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
-                app:cardBackgroundColor="?android:attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="15dp">
 
                 <ImageView
@@ -140,7 +140,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
-                app:cardBackgroundColor="?android:attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="15dp">
 
                 <ImageView

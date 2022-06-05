@@ -13,6 +13,7 @@
         <entry key="..\:/a34080/Program Files/Android/AndroidStudioProjects/QuackPlayer/app/src/main/res/drawable/ic_skip_previous.xml" value="0.1175" />
         <entry key="..\:/a34080/Program Files/Android/AndroidStudioProjects/QuackPlayer/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/a34080/Program Files/Android/AndroidStudioProjects/QuackPlayer/app/src/main/res/layout/files_adapter_layout.xml" value="0.33" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.346" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/background_pink.xml" value="0.3105" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_loop.xml" value="0.4205" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_pause.xml" value="0.4205" />
@@ -20,10 +21,19 @@
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_search.xml" value="0.3105" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/ic_shuffle.xml" value="0.4205" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/drawable/progress_bar_scrubber.xml" value="0.22" />
-        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/activity_new_main.xml" value="0.3098958333333333" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/app_bar_new_main.xml" value="0.5322916666666667" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/content_new_main.xml" value="0.5322916666666667" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/controls.xml" value="0.43675213675213675" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/custom_action_bar.xml" value="0.53125" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/exo_playback_control_view.xml" value="0.5322916666666667" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/files_adapter_layout.xml" value="0.5" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/fragment_gallery.xml" value="0.5322916666666667" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/fragment_home.xml" value="0.5322916666666667" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/layout/nav_header_new_main.xml" value="0.3703125" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/menu/activity_main_drawer.xml" value="0.5322916666666667" />
+        <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/menu/new_main.xml" value="0.3098958333333333" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/menu/top_menu.xml" value="0.3692708333333333" />
         <entry key="..\:/fds/AndroidStudio/quack-player/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3105" />
       </map>

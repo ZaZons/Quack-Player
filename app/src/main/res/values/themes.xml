@@ -2,9 +2,9 @@
     <!-- Tema claro -->
     <style name="Theme.QuackPlayer" parent="Theme.MaterialComponents.DayNight">
         <!-- Cor primária -->
-        <item name="android:colorPrimary">@color/quack_blue</item>
+        <item name="colorPrimary">@color/quack_blue</item>
         <!-- Cor secundária -->
-        <item name="android:colorSecondary">@color/quack_pink</item>
+        <item name="colorSecondary">@color/quack_pink</item>
         <!-- Cor do fundo -->
         <item name="android:colorBackground">@color/white</item>
         <!-- Cor do texto, aplicada automaticamente -->
@@ -14,8 +14,18 @@
         <!-- Action bar color -->
         <item name="actionBarStyle">@style/CustomActionBar</item>
     </style>
+
     <style name="CustomActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="Theme.QuackPlayer.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.QuackPlayer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.QuackPlayer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
 

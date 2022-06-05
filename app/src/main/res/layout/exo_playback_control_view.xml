@@ -9,17 +9,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginStart="30dp"
-        android:textSize="12sp"/>
+        android:text="00:00"
+        android:textSize="12sp" />
 
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@+id/exo_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="70dp"
-        android:layout_marginStart="70dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
         android:background="@android:color/transparent"
         app:bar_height="3dp"
         app:played_color="?attr/colorSecondary"
@@ -34,7 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         android:layout_alignParentEnd="true"
+        android:text="00:00"
         android:textSize="12sp"/>
 </RelativeLayout>
