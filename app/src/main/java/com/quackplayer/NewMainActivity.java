@@ -179,15 +179,11 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
             //Atualização da UI quando o MediaItem é alterado
             @Override
             public void onMediaItemTransition(MediaItem newMediaItem, @com.google.android.exoplayer2.Player.MediaItemTransitionReason int reason) {
-                Log.d("play", "currentPlayingObject: " + currentPlayingObject);
                 if(currentPlayingObject != null) {
                     currentPlayingObject.setPlaying(false);
-                    Log.d("play", "currentPlayingObject: " + currentPlayingObject.getTitle());
                 }
 
-                Log.d("play", "size: " + filesList.size());
                 for(FileObject fileObject : filesList) {
-                    Log.d("play", "File: " + fileObject.getTitle());
                     if(fileObject.getMediaItem() == newMediaItem) {
                         currentPlayingObject = fileObject;
                     }
@@ -203,8 +199,6 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
 
                 if(!player.isPlaying())
                     player.play();
-
-                Log.d("play", "currentPlayingObject: " + currentPlayingObject.getTitle());
             }
 
             //Atualizar a imagem do botão de pausar e retomar a reprodução
@@ -277,48 +271,7 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
 
     @Override
     public void onSelected(int position, List<FileObject> filesList, FileAdapter fileAdapter) {
-        this.filesList = filesList;
-//        this.fileAdapter = fileAdapter;
-
-        //Get o mediaItem do objeto selecionado
-        FileObject firstItem = filesList.get(position);
-        MediaItem mediaItem = firstItem.getMediaItem();
-
-        //Se o mediaItem q selecionar ja estiver a ser tocado no player
-        //então a função retorna
-        if(player.getCurrentMediaItem() == mediaItem) {
-            player.seekTo(0);
-            return;
-        }
-
-        //Parar o player e limpar a queue
-        player.stop();
-        player.clearMediaItems();
-
-        //Adicionar à queue o item selecionado e os restantes depois
-        //Quando chegar ao fim da lista vai para o primeiro item e adiciona
-        //os items seguintes até voltar ao primeiro adicionado
-        player.addMediaItem(mediaItem);
-        for(int i = position + 1; i < filesList.size() + 1; i++) {
-            if(i == filesList.size())
-                i = 0;
-
-            if(i == position)
-                break;
-
-            MediaItem nextMediaItem = filesList.get(i).getMediaItem();
-            player.addMediaItem(nextMediaItem);
-        }
-
-        firstItem.setPlaying(true);
-        fileAdapter.notifyDataSetChanged();
-
-
-        //Autorizar o player a tocar em segundo plano
-        notification();
-
-        player.prepare();
-        player.play();
+        OnSelected.onSelected(position, filesList, fileAdapter);
     }
 
     public static ExoPlayer getPlayer() {
@@ -343,7 +296,19 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent(context, PlaybackService.class);
+        stopService(intent);
+        player = null;
+    }
 }
+
+
+
+
 
 
 

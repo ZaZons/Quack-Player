@@ -35,6 +35,9 @@ public class PlaybackService extends Service {
                             @Override
                             public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
                                 PlayerNotificationManager.NotificationListener.super.onNotificationPosted(notificationId, notification, ongoing);
+//                                if(ongoing) {
+//                                    startForeground(startId, notification);
+//                                }
                                 if(!ongoing) {
                                     stopService(intent);
                                 } else {

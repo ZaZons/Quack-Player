@@ -142,7 +142,8 @@ public class HomeFragment extends Fragment {
         RecyclerView mainRecyclerView = binding.mainRecyclerView;
 
         if(fileAdapter == null) {
-            fileAdapter = new FileAdapter(filesList, context);
+            fileAdapter = new FileAdapter(filesList, context, null);
+            FileAdapter.setOriginalFilesList(filesList);
         }
 
         mainRecyclerView.setAdapter(fileAdapter);
