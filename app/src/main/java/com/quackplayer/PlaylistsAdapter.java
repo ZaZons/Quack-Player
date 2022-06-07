@@ -118,17 +118,22 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
                     }
                 });
             } else {
-                ArrayList<FileObject> finalPlaylistObjects = playlistObjects;
-
                 holder.rootLayout.setOnClickListener(v -> {
-                    Intent intent = new Intent(context, PlaylistActivity.class);
-                    Log.d("playlistsAdapter", "finalPlaylistObjects: " + finalPlaylistObjects.toString());
-                    intent.putExtra("FilesList", finalPlaylistObjects);
-                    intent.putExtra("PlaylistName", finalName);
-                    context.startActivity(intent);
+                    try {
+                        FileReader reader1 = new FileReader(playlistFile);
+                        BufferedReader br1 = new BufferedReader(reader1);
+
+                        ArrayList<FileObject> finalPlaylistObjects = gson.fromJson(br1, new TypeToken<ArrayList<FileObject>>(){}.getType());
+                        Intent intent = new Intent(context, PlaylistActivity.class);
+                        intent.putExtra("FilesList", finalPlaylistObjects);
+                        intent.putExtra("PlaylistName", finalName);
+                        context.startActivity(intent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

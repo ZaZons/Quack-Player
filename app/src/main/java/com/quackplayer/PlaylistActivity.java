@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,14 +30,13 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         List<FileObject> playlistObjects = (ArrayList<FileObject>) getIntent().getSerializableExtra("FilesList");
+        Log.d("playlistsAdapter", "finalPlaylistObjects: " + playlistObjects);
 
         filesInPlaylist = findViewById(R.id.files);
         text = findViewById(R.id.infoPlaylist);
 
         if(playlistObjects != null) {
-            if(adapter == null) {
-                adapter = new FileAdapter(playlistObjects, this, playlistName);
-            }
+            adapter = new FileAdapter(playlistObjects, this, playlistName);
 
             filesInPlaylist.setAdapter(adapter);
             filesInPlaylist.setHasFixedSize(false);
