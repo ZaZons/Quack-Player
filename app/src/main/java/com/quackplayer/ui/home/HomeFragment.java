@@ -175,7 +175,10 @@ public class HomeFragment extends Fragment {
                     List<FileObject> filteredList = new ArrayList<>();
 
                     for(FileObject item : filesList) {
-                        if(item.getTitle().toUpperCase().contains(newText.toUpperCase())) {
+                        String title = item.getTitle().toUpperCase();
+                        String author = item.getArtist().toUpperCase();
+                        if(title.contains(newText.toUpperCase()) ||
+                                author.contains(newText.toUpperCase())) {
                             filteredList.add(item);
                         }
                     }

@@ -119,7 +119,7 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
         //Reproduzir o MediaItem anterior
         skipPreviousBtn.setOnClickListener(v -> {
             long millisecondsToGoBack = 1500;
-            if(player.getCurrentPosition() >= millisecondsToGoBack) {
+            if(player.getCurrentPosition() >= millisecondsToGoBack || !player.hasPreviousMediaItem()) {
                 player.seekTo(0);
             } else {
                 if(player.hasPreviousMediaItem())
@@ -248,25 +248,28 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
         player.addListener(playerListener);
     }
 
+    static MediaSessionCompat mediaSession = null;
     static void notification() {
-        CharSequence name = "Playback";
-        String channelId = "playback_channel";
-        String description = "Playback notification";
-        int importance = NotificationManager.IMPORTANCE_HIGH;
+        if(mediaSession == null) {
+            CharSequence name = "Playback";
+            String channelId = "playback_channel";
+            String description = "Playback notification";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
 
-        NotificationChannel channel = new NotificationChannel(channelId, name, importance);
-        channel.setDescription(description);
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
 
-        NotificationManager notificationChannelManager = context.getSystemService(NotificationManager.class);
-        notificationChannelManager.createNotificationChannel(channel);
+            NotificationManager notificationChannelManager = context.getSystemService(NotificationManager.class);
+            notificationChannelManager.createNotificationChannel(channel);
 
-        MediaSessionCompat mediaSession = new MediaSessionCompat(context, "media_session");
-        MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
-        mediaSessionConnector.setPlayer(player);
-        mediaSession.setActive(true);
+            mediaSession = new MediaSessionCompat(context, "media_session");
+            MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
+            mediaSessionConnector.setPlayer(player);
+            mediaSession.setActive(true);
 
-        Intent intent = new Intent(context, PlaybackService.class);
-        context.startForegroundService(intent);
+            Intent intent = new Intent(context, PlaybackService.class);
+            context.startForegroundService(intent);
+        }
     }
 
     @Override
@@ -302,7 +305,9 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
         super.onDestroy();
         Intent intent = new Intent(context, PlaybackService.class);
         stopService(intent);
+        PlaybackService.isOn = false;
         player = null;
+        finish();
     }
 }
 

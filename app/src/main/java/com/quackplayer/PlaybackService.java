@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 public class PlaybackService extends Service {
+    public static boolean isOn;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -21,6 +22,7 @@ public class PlaybackService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        isOn = true;
         NotificationAdapter notificationAdapter = new NotificationAdapter();
 
         PlayerNotificationManager playerNotificationManager =
@@ -37,6 +39,8 @@ public class PlaybackService extends Service {
                                 PlayerNotificationManager.NotificationListener.super.onNotificationPosted(notificationId, notification, ongoing);
                                 if(ongoing) {
                                     startForeground(startId, notification);
+                                } else if(!isOn){
+                                    stopService(intent);
                                 }
 //                                if(!ongoing) {
 //                                    stopService(intent);
