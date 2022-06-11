@@ -59,17 +59,3 @@ public class FileObject implements Serializable {
         isPlaying = playing;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

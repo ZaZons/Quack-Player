@@ -66,12 +66,3 @@ public class AddToPlaylistActivity extends AppCompatActivity {
         text.setVisibility(View.GONE);
     }
 }
-
-
-
-
-
-
-
-
-

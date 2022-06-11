@@ -127,20 +127,3 @@ public class PlaylistsWork {
         return (int) (px / (metrics.densityDpi / 160f));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

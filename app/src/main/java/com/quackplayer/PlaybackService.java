@@ -13,8 +13,10 @@ import androidx.core.app.NotificationCompat;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 public class PlaybackService extends Service {
+
     //Variável para a notificação ser apagada
     static boolean isOn;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
