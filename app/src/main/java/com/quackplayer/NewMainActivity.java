@@ -165,16 +165,18 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
     void listener() {
         //Obter as cores
         TypedValue typedValue = new TypedValue();
-        TypedArray a = obtainStyledAttributes(typedValue.data, new int[] { android.R.attr.colorPrimary, R.attr.colorSecondary });
-        int colorPrimary = a.getColor(0, 0);
-        int colorSecondary = a.getColor(1, 0);
-        a.recycle();
+        int[] colors = new int[] { android.R.attr.colorPrimary, R.attr.colorSecondary };
+        TypedArray colorsArray = obtainStyledAttributes(typedValue.data, colors);
+        int colorPrimary = colorsArray.getColor(0, 0);
+        int colorSecondary = colorsArray.getColor(1, 0);
+        colorsArray.recycle();
 
         //Configurar o listener
         playerListener = new Player.Listener() {
             //Atualização da UI quando o MediaItem é alterado
             @Override
-            public void onMediaItemTransition(MediaItem newMediaItem, @com.google.android.exoplayer2.Player.MediaItemTransitionReason int reason) {
+            public void onMediaItemTransition(MediaItem newMediaItem,
+                        @com.google.android.exoplayer2.Player.MediaItemTransitionReason int reason) {
                 //Procurar pelo ficheiro que está a ser tocado na lista
                 for(FileObject fileObject : filesList) {
                     if(fileObject.getMediaItem() == newMediaItem) {
