@@ -308,7 +308,7 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
         super.onDestroy();
         Intent intent = new Intent(context, PlaybackService.class);
         stopService(intent);
-        PlaybackService.isOn = false;
+        PlaybackService.setIsOn(false);
         player = null;
         finish();
     }

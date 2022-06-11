@@ -67,4 +67,8 @@ public class PlaybackService extends Service {
 
         return START_NOT_STICKY;
     }
+
+    public static void setIsOn(boolean isOn) {
+        PlaybackService.isOn = isOn;
+    }
 }
