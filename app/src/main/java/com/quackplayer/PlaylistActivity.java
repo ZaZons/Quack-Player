@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistActivity extends AppCompatActivity implements SelectFileListener {
-    RecyclerView filesInPlaylist;
-    TextView text;
+
     static FileAdapter adapter;
     static List<FileObject> filesList;
+
+    RecyclerView filesInPlaylist;
+    TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +26,19 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
         setContentView(R.layout.activity_playlist);
 
         String playlistName = (String) getIntent().getSerializableExtra("PlaylistName");
+
+        //Personalizar ActionBar
         setSupportActionBar(findViewById(R.id.playlistToolbar));
         getSupportActionBar().setTitle(playlistName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        List<FileObject> playlistObjects = (ArrayList<FileObject>) getIntent().getSerializableExtra("FilesList");
-        Log.d("playlistsAdapter", "finalPlaylistObjects: " + playlistObjects);
-
         filesInPlaylist = findViewById(R.id.files);
         text = findViewById(R.id.infoPlaylist);
 
+        List<FileObject> playlistObjects = (ArrayList<FileObject>) getIntent().getSerializableExtra("FilesList");
+
+        //Se a playlist tiver ficheiros então popular o RecyclerView
         if(playlistObjects != null) {
             adapter = new FileAdapter(this, playlistObjects, playlistName);
 

@@ -23,9 +23,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class PlaylistsWork {
+
     static RecyclerView playlistsRecyclerView;
 
+    //Função que cria as playlists
     public static void create(Context context, FileObject objectToAdd) {
+        //Construir a caixa de texto
         final String[] playlistName = new String[1];
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Playlist name");
@@ -44,6 +47,8 @@ public class PlaylistsWork {
         container.addView(name);
 
         builder.setView(container);
+
+        //Botão de criar playlist
         builder.setPositiveButton("Create", (dialog, which) -> {
             playlistName[0] = name.getText().toString();
 
@@ -52,6 +57,7 @@ public class PlaylistsWork {
                 playlistsDir.mkdirs();
             }
 
+            //Criar ficheiro com o nome escolhido para a playlist
             File playlistFile = new File(playlistsDir, playlistName[0] + ".json");
             try {
                 if(!playlistFile.exists()) {
@@ -66,11 +72,14 @@ public class PlaylistsWork {
                 e.printStackTrace();
             }
         });
+
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
+    //Função que procura pelas playlists
     public static void check(RecyclerView playlistsRecyclerView, Context context, FileObject objectToAdd) {
+        //Associar o RecyclerView certo, para popular com a lista de playlists
         if(playlistsRecyclerView != null) {
             PlaylistsWork.playlistsRecyclerView = playlistsRecyclerView;
         } else {
@@ -82,8 +91,12 @@ public class PlaylistsWork {
             playlistsDir.mkdirs();
         }
 
+        //Lista com as playlists
         ArrayList<Path> playlists = new ArrayList<>();
+
+        //Procurar ficheiros de playlist
         try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(playlistsDir.getAbsoluteFile().toPath())) {
+            //Adicionar playlists à lista
             for(Path file : dirStream) {
                 playlists.add(file);
             }
@@ -96,6 +109,7 @@ public class PlaylistsWork {
                 }
             }
 
+            //Adapter das playlists
             PlaylistsAdapter playlistsAdapter = new PlaylistsAdapter(context, playlists, objectToAdd);
 
             playlistsRecyclerView.setAdapter(playlistsAdapter);
@@ -106,6 +120,7 @@ public class PlaylistsWork {
         }
     }
 
+    //Função para converter pixeis em dp
     static int convertPixelsToDp(float px, Context context) {
         Resources res = context.getResources();
         DisplayMetrics metrics = res.getDisplayMetrics();

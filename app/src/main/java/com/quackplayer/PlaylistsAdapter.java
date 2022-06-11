@@ -55,6 +55,7 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
 
     @Override
     public void onBindViewHolder(@NonNull PlaylistsViewHolder holder, int position) {
+        //Definir o objeto e construir a célula
         Path playlist = playlistsList.get(position);
 
         String name = playlist.getFileName().toString();
@@ -63,6 +64,7 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
         holder.name.setText(finalName);
 
         try {
+            //Obter ficheiro da playlist
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             File rootDir = new File(context.getFilesDir(), "Playlists");
             File playlistFile = new File(rootDir, finalName + ".json");
@@ -71,6 +73,7 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
                 PopupMenu popup = new PopupMenu(v.getContext(), holder.options);
                 popup.inflate(R.menu.playlist_options);
 
+                //Eliminar playlist
                 popup.setOnMenuItemClickListener(item -> {
                     playlistFile.delete();
                     PlaylistsWork.check(null, context, objectToAdd);
@@ -79,11 +82,14 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
                 popup.show();
             });
 
+            //Ler o ficheiro da playlist e obter a lista de ficheiros
             FileReader reader = new FileReader(playlistFile);
             BufferedReader br = new BufferedReader(reader);
 
             ArrayList<FileObject> playlistObjects = gson.fromJson(br, new TypeToken<ArrayList<FileObject>>(){}.getType());
 
+            //Se existir um objeto para adicionar à playlist então o objeto é adicionado à lista e o ficheiro é atualizado
+            //Se não então carregar no ficheiro começa a reprodução
             if(objectToAdd != null) {
                 if(playlistObjects != null) {
                     for(FileObject object : playlistObjects) {
@@ -148,6 +154,7 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
 
     static class PlaylistsViewHolder extends RecyclerView.ViewHolder {
 
+        //Variáveis que correspondem à célula
         private final RelativeLayout rootLayout;
         private final TextView name;
         private final ImageView options;
