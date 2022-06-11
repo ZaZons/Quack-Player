@@ -25,11 +25,9 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/black"
                 app:popupTheme="@style/Theme.QuackPlayer.PopupOverlay"/>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <include layout="@layout/content_new_main" />
-
     </LinearLayout>
 
     <!--Barra que tem os controlos e a barra de progresso-->
@@ -90,7 +88,6 @@
                             android:layout_gravity="center"
                             android:src="@drawable/ic_loop"/>
                     </androidx.cardview.widget.CardView>
-
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -111,7 +108,6 @@
                         android:text="1"
                         android:textColor="@color/white"
                         android:textStyle="bold"/>
-
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
@@ -128,7 +124,6 @@
                     android:layout_height="55dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_skip_previous"/>
-
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -144,7 +139,6 @@
                     android:layout_height="70dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_play_arrow" />
-
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -160,7 +154,6 @@
                     android:layout_height="55dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_skip_next"/>
-
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -176,7 +169,6 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_shuffle"/>
-
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </LinearLayout>
