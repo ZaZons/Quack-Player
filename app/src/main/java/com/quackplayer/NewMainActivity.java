@@ -321,21 +321,3 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
                 || super.onSupportNavigateUp();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
