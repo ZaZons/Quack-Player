@@ -175,10 +175,6 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
             //Atualização da UI quando o MediaItem é alterado
             @Override
             public void onMediaItemTransition(MediaItem newMediaItem, @com.google.android.exoplayer2.Player.MediaItemTransitionReason int reason) {
-                if(currentPlayingObject != null) {
-                    currentPlayingObject.setPlaying(false);
-                }
-
                 //Procurar pelo ficheiro que está a ser tocado na lista
                 for(FileObject fileObject : filesList) {
                     if(fileObject.getMediaItem() == newMediaItem) {
