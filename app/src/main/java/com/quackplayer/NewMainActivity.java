@@ -132,7 +132,7 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
 
         //Botão de retrocesso
         skipPreviousBtn.setOnClickListener(v -> {
-            long millisecondsToGoBack = 1500;
+            long millisecondsToGoBack = 3000;
             if(player.getCurrentPosition() >= millisecondsToGoBack || !player.hasPreviousMediaItem()) {
                 player.seekTo(0);
             } else {
