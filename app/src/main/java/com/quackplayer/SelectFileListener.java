@@ -3,7 +3,8 @@ package com.quackplayer;
 import java.util.List;
 
 public interface SelectFileListener {
-    void onSelected(int position, List<FileObject> filesList, FileAdapter fileAdapter);
+    //Evento que recebe a lista
+    void onSelected(List<FileObject> filesList, int position, FileAdapter fileAdapter);
 }
 
 

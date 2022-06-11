@@ -13,7 +13,8 @@ import androidx.core.app.NotificationCompat;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 public class PlaybackService extends Service {
-    public static boolean isOn;
+    //Variável para a notificação ser apagada
+    static boolean isOn;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -25,6 +26,7 @@ public class PlaybackService extends Service {
         isOn = true;
         NotificationAdapter notificationAdapter = new NotificationAdapter();
 
+        //Criar e personalizar o gestor de notificações
         PlayerNotificationManager playerNotificationManager =
                 new PlayerNotificationManager.Builder(getApplicationContext(), 1, "playback_channel")
                         .setMediaDescriptionAdapter(notificationAdapter)
@@ -37,16 +39,12 @@ public class PlaybackService extends Service {
                             @Override
                             public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
                                 PlayerNotificationManager.NotificationListener.super.onNotificationPosted(notificationId, notification, ongoing);
+                                //Se o player estiver ativo então a notificação deve ser atualizada, se não então o serviço fecha
                                 if(ongoing) {
                                     startForeground(startId, notification);
                                 } else if(!isOn){
                                     stopService(intent);
                                 }
-//                                if(!ongoing) {
-//                                    stopService(intent);
-//                                } else {
-//                                    startForeground(startId, notification);
-//                                }
                             }
 
                             @Override
@@ -57,6 +55,7 @@ public class PlaybackService extends Service {
                         })
                         .build();
 
+        //Personalizar as ações do gestor de notificações
         playerNotificationManager.setUseNextActionInCompactView(true);
         playerNotificationManager.setUsePreviousActionInCompactView(true);
         playerNotificationManager.setUseFastForwardAction(false);

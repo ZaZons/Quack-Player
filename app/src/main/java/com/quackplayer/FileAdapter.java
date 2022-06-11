@@ -29,16 +29,22 @@ import java.util.List;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder> {
 
-    private List<FileObject> filesList;
-    private final SelectFileListener selectFileListener;
-    private Context context;
-    private String playlistName;
+    Context context;
+
+    SelectFileListener selectFileListener;
+
+    //Lista de ficheiros atual
+    List<FileObject> filesList;
+    //Lista de ficheiros original, com todos os ficheiros encontrados
     static List<FileObject> originalFilesList;
 
-    public FileAdapter(List<FileObject> filesList, Context context, String playlistName) {
-        this.filesList = filesList;
-        this.selectFileListener = ((SelectFileListener)context);
+    //Caso o ficheiro esteja numa playlist, então esta variável tem o nome dessa playlist
+    String playlistName;
+
+    public FileAdapter(Context context, List<FileObject> filesList, String playlistName) {
         this.context = context;
+        this.selectFileListener = ((SelectFileListener)context);
+        this.filesList = filesList;
         this.playlistName = playlistName;
     }
 
@@ -46,17 +52,20 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
     @NonNull
     @Override
     public FileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FileViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.files_adapter_layout, null));
+        return new FileViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.files_adapter_layout, null));
     }
 
     @Override
     public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
+        //Definir o objeto e construir a célula
         FileObject selectedFile = filesList.get(position);
 
         holder.title.setText(selectedFile.getTitle());
         holder.artist.setText(selectedFile.getArtist());
         holder.duration.setText(selectedFile.getDuration());
 
+        //Se o objeto for o que está a ser tocado então alterar a propriedade "isPlaying"
         FileObject currentPlayingObject = NewMainActivity.getCurrentPlayingObject();
         if(currentPlayingObject != null) {
             if(currentPlayingObject.getId() == selectedFile.getId()) {
@@ -66,19 +75,27 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
             }
         }
 
+        //Definir o fundo do objeto consoante a propriedade "isPlaying"
         if(selectedFile.isPlaying())
             holder.rootLayout.setBackgroundResource(R.drawable.background_pink);
         else
             holder.rootLayout.setBackgroundResource(R.drawable.background_blue);
 
+        //Definir o uso do evento "onSelected", depende se o ficheiro está ou não numa playlist
         if(playlistName == null)
-            holder.rootLayout.setOnClickListener(v -> selectFileListener.onSelected(selectedFile.getId(), originalFilesList, this));
+            holder.rootLayout.setOnClickListener(v ->
+                selectFileListener.onSelected(originalFilesList, selectedFile.getId(), this)
+            );
         else
-            holder.rootLayout.setOnClickListener(v -> selectFileListener.onSelected(position, filesList, this));
+            holder.rootLayout.setOnClickListener(v ->
+                selectFileListener.onSelected(filesList, position, this)
+            );
 
+        //Opções
         holder.options.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(v.getContext(), holder.options);
 
+            //Definir as opções, depende se o ficheiro está ou não numa playlist
             if(playlistName != null)
                 popup.inflate(R.menu.file_options_playlist);
             else
@@ -86,6 +103,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
 
             popup.setOnMenuItemClickListener(menuItem -> {
                 switch(menuItem.getItemId()) {
+                    //Abrir a atividade "AddToPlaylist" para adicionar o ficheiro a uma playlist
                     case R.id.addToPlaylist:
                         Intent intent = new Intent(context, AddToPlaylistActivity.class);
                         FileObject newFile = selectedFile;
@@ -95,6 +113,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
 
                         context.startActivity(intent);
                         break;
+
+                    //Remover o objeto da playlist e atualizá-la
                     case R.id.removeFromPlaylist:
                         try {
                             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -104,7 +124,9 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
                             FileReader reader = new FileReader(playlistFile);
                             BufferedReader br = new BufferedReader(reader);
 
-                            ArrayList<FileObject> playlistObjects = gson.fromJson(br, new TypeToken<ArrayList<FileObject>>(){}.getType());
+                            ArrayList<FileObject> playlistObjects = gson.fromJson(br,
+                                    new TypeToken<ArrayList<FileObject>>(){}.getType());
+
                             FileObject objectToRemove = null;
                             for(FileObject file : playlistObjects) {
                                 if(file.getId() == selectedFile.getId()) {
@@ -115,7 +137,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
                             playlistObjects.remove(objectToRemove);
 
                             FileWriter writer = new FileWriter(playlistFile);
-                            String jsonObject = gson.toJson(playlistObjects, new TypeToken<ArrayList<FileObject>>(){}.getType());
+                            String jsonObject = gson.toJson(playlistObjects,
+                                    new TypeToken<ArrayList<FileObject>>(){}.getType());
 
                             writer.write(jsonObject);
                             writer.close();
@@ -140,11 +163,12 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
 
-        private final RelativeLayout rootLayout;
-        private final TextView title;
-        private final TextView artist;
-        private final TextView duration;
-        private final ImageView options;
+        //Variáveis que correspondem à célula
+        RelativeLayout rootLayout;
+        TextView title;
+        TextView artist;
+        TextView duration;
+        ImageView options;
 
         public FileViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -157,11 +181,13 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         }
     }
 
+    //Função para o sistema de pesquisa
     public void filter(List<FileObject> filteredList) {
         filesList = filteredList;
         notifyDataSetChanged();
     }
 
+    //Função para definir a lista de ficheiros original
     public static void setOriginalFilesList(List<FileObject> originalFilesList) {
         FileAdapter.originalFilesList = originalFilesList;
     }

@@ -12,6 +12,7 @@ public class NotificationAdapter implements PlayerNotificationManager.MediaDescr
 
     @Override
     public CharSequence getCurrentContentTitle(Player player) {
+        //Nome do ficheiro a ser tocado pelo player
         return NewMainActivity.getCurrentPlayingObject().getTitle();
     }
 
@@ -24,6 +25,7 @@ public class NotificationAdapter implements PlayerNotificationManager.MediaDescr
     @Nullable
     @Override
     public CharSequence getCurrentContentText(Player player) {
+        //Autor do ficheiro a ser tocado pelo player
         return NewMainActivity.getCurrentPlayingObject().getArtist();
     }
 

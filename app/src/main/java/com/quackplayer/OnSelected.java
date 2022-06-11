@@ -6,11 +6,14 @@ import com.google.android.exoplayer2.MediaItem;
 import java.util.List;
 
 public class OnSelected {
-    public static void onSelected(int position, List<FileObject> filesList, FileAdapter fileAdapter) {
+    public static void onSelected(List<FileObject> filesList, int position, FileAdapter fileAdapter) {
+        //Definir a lista de ficheiros da NewMainActivity
         NewMainActivity.setFilesList(filesList);
 
+        //Obter o player
         ExoPlayer player = NewMainActivity.getPlayer();
-        //Get o mediaItem do objeto selecionado
+
+        //Criar e obter o mediaItem do objeto selecionado
         FileObject firstItem = filesList.get(position);
         firstItem.createMediaItem();
 
@@ -36,13 +39,14 @@ public class OnSelected {
             player.addMediaItem(nextMediaItem);
         }
 
-//        NewMainActivity.setCurrentPlayingObject(firstItem);
+        //Atualizar a UI
         firstItem.setPlaying(true);
         fileAdapter.notifyDataSetChanged();
 
         //Autorizar o player a tocar em segundo plano
         NewMainActivity.notification();
 
+        //Começar a reprodução
         player.prepare();
         player.play();
     }

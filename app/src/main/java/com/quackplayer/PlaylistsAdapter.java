@@ -2,7 +2,6 @@ package com.quackplayer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.quackplayer.ui.playlists.PlaylistsFragment;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,16 +29,22 @@ import java.util.List;
 
 public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.PlaylistsViewHolder> {
 
-    List<Path> playlistsList;
     Context context;
-    FileObject objectToAdd;
-    static int x;
 
-    public PlaylistsAdapter(List<Path> playlistsList, Context context, FileObject objectToAdd) {
+    //Lista de playlists
+    List<Path> playlistsList;
+
+    //Objeto a adicionar, se existir um
+    FileObject objectToAdd;
+
+    //Número de playlists em que o objeto a adicionar está
+    static int objectInXPlaylists;
+
+    public PlaylistsAdapter(Context context, List<Path> playlistsList, FileObject objectToAdd) {
         this.playlistsList = playlistsList;
         this.context = context;
         this.objectToAdd = objectToAdd;
-        x = 0;
+        objectInXPlaylists = 0;
     }
 
     @NonNull
@@ -86,12 +89,12 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
                     for(FileObject object : playlistObjects) {
                         if(object.getId() == objectToAdd.getId()) {
                             holder.rootLayout.setVisibility(View.GONE);
-                            x++;
+                            objectInXPlaylists++;
                         }
                     }
-                    if(x >= playlistsList.size()) {
+                    if(objectInXPlaylists >= playlistsList.size()) {
                         AddToPlaylistActivity.setText("You added this file to all your playlists");
-                        x = 1;
+                        objectInXPlaylists = 1;
                     } else {
                         AddToPlaylistActivity.setTextNotVisible();
                     }

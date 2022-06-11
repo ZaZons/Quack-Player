@@ -7,11 +7,12 @@ import com.google.android.exoplayer2.MediaItem;
 import java.io.Serializable;
 
 public class FileObject implements Serializable {
-    private int id;
-    private boolean isPlaying;
-    private final String title, artist, duration;
-    private final String uri;
-    private MediaItem mediaItem;
+
+    int id;
+    boolean isPlaying;
+    String title, artist, duration;
+    String uri;
+    MediaItem mediaItem;
 
     public FileObject(int id, String title, String artist, String duration, Uri uri) {
         this.id = id;

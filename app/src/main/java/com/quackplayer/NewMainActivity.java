@@ -279,9 +279,9 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
     }
 
     @Override
-    public void onSelected(int position, List<FileObject> filesList, FileAdapter fileAdapter) {
+    public void onSelected(List<FileObject> filesList, int position, FileAdapter fileAdapter) {
         //Redirecionar o evento para o ficheiro "OnSelected"
-        OnSelected.onSelected(position, filesList, fileAdapter);
+        OnSelected.onSelected(filesList, position, fileAdapter);
     }
 
     //Função que devolve o player

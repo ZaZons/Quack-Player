@@ -11,8 +11,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class AddToPlaylistActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
+
     static TextView text;
+
+    //RecyclerView com a lista de playlists
+    RecyclerView recyclerView;
+    //Botão de criar playlist
     ImageButton add;
 
     @Override
@@ -20,22 +24,26 @@ public class AddToPlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_playlist);
 
+        //Personalizar ActionBar
         setSupportActionBar(findViewById(R.id.addToPlaylistToolBar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        add = findViewById(R.id.createPlaylistButton);
-        recyclerView = findViewById(R.id.playlists);
         text = findViewById(R.id.infoAddToPlaylist);
+        recyclerView = findViewById(R.id.playlists);
+        add = findViewById(R.id.createPlaylistButton);
 
+        //Objeto para adicionar à playlist
         FileObject objectToAdd = (FileObject) getIntent().getSerializableExtra("ToAdd");
         PlaylistsWork.check(recyclerView, this, objectToAdd);
 
+        //Botão de criar playlist
         add.setOnClickListener(v -> {
             PlaylistsWork.create(this, objectToAdd);
         });
     }
 
+    //Botão de retroceder
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -47,11 +55,13 @@ public class AddToPlaylistActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //Definir texto de informação
     public static void setText(String value) {
         text.setVisibility(View.VISIBLE);
         text.setText(value);
     }
 
+    //Definir texto de informação como invisível
     public static void setTextNotVisible() {
         text.setVisibility(View.GONE);
     }

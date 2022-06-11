@@ -96,7 +96,7 @@ public class PlaylistsWork {
                 }
             }
 
-            PlaylistsAdapter playlistsAdapter = new PlaylistsAdapter(playlists, context, objectToAdd);
+            PlaylistsAdapter playlistsAdapter = new PlaylistsAdapter(context, playlists, objectToAdd);
 
             playlistsRecyclerView.setAdapter(playlistsAdapter);
             playlistsRecyclerView.setHasFixedSize(false);

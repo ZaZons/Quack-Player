@@ -36,7 +36,7 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
         text = findViewById(R.id.infoPlaylist);
 
         if(playlistObjects != null) {
-            adapter = new FileAdapter(playlistObjects, this, playlistName);
+            adapter = new FileAdapter(this, playlistObjects, playlistName);
 
             filesInPlaylist.setAdapter(adapter);
             filesInPlaylist.setHasFixedSize(false);
@@ -49,11 +49,11 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
     }
 
     @Override
-    public void onSelected(int position, List<FileObject> filesList, FileAdapter adapter) {
+    public void onSelected(List<FileObject> filesList, int position, FileAdapter adapter) {
         PlaylistActivity.filesList = filesList;
         PlaylistActivity.adapter = adapter;
 
-        OnSelected.onSelected(position, filesList, adapter);
+        OnSelected.onSelected(filesList, position, adapter);
     }
 
     @Override
