@@ -48,8 +48,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         this.playlistName = playlistName;
     }
 
-    @SuppressLint("InflateParams")
-    @NonNull
     @Override
     public FileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new FileViewHolder(LayoutInflater.from(parent.getContext())
