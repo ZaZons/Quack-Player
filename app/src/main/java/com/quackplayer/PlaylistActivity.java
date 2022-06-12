@@ -14,7 +14,6 @@ import java.util.List;
 public class PlaylistActivity extends AppCompatActivity implements SelectFileListener {
 
     static FileAdapter adapter;
-    static List<FileObject> filesList;
 
     RecyclerView playlistFilesRecyclerView;
     TextView text;
@@ -53,7 +52,6 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
 
     @Override
     public void onSelected(List<FileObject> filesList, int position, FileAdapter adapter) {
-        PlaylistActivity.filesList = filesList;
         PlaylistActivity.adapter = adapter;
 
         OnSelected.onSelected(filesList, position, adapter);
