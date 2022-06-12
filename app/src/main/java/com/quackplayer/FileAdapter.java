@@ -70,16 +70,12 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         if(currentPlayingObject != null) {
             if(currentPlayingObject.getId() == selectedFile.getId()) {
                 selectedFile.setPlaying(true);
+                holder.rootLayout.setBackgroundResource(R.drawable.background_pink);
             } else {
                 selectedFile.setPlaying(false);
+                holder.rootLayout.setBackgroundResource(R.drawable.background_blue);
             }
         }
-
-        //Definir o fundo do objeto consoante a propriedade "isPlaying"
-        if(selectedFile.isPlaying())
-            holder.rootLayout.setBackgroundResource(R.drawable.background_pink);
-        else
-            holder.rootLayout.setBackgroundResource(R.drawable.background_blue);
 
         //Definir o uso do evento "onSelected", depende se o ficheiro está ou não numa playlist
         if(playlistName == null)
