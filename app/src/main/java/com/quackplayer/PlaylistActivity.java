@@ -52,8 +52,6 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
 
     @Override
     public void onSelected(List<FileObject> filesList, int position, FileAdapter adapter) {
-        PlaylistActivity.adapter = adapter;
-
         OnSelected.onSelected(filesList, position, adapter);
     }
 
