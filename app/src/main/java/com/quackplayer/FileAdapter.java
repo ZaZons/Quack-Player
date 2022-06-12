@@ -153,6 +153,17 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         return filesList.size();
     }
 
+    //Função para o sistema de pesquisa
+    public void filter(List<FileObject> filteredList) {
+        filesList = filteredList;
+        notifyDataSetChanged();
+    }
+
+    //Função para definir a lista de ficheiros original
+    public static void setOriginalFilesList(List<FileObject> originalFilesList) {
+        FileAdapter.originalFilesList = originalFilesList;
+    }
+
     static class FileViewHolder extends RecyclerView.ViewHolder {
 
         //Variáveis que correspondem à célula
@@ -171,16 +182,5 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
             duration = itemView.findViewById(R.id.duration);
             options = itemView.findViewById(R.id.options);
         }
-    }
-
-    //Função para o sistema de pesquisa
-    public void filter(List<FileObject> filteredList) {
-        filesList = filteredList;
-        notifyDataSetChanged();
-    }
-
-    //Função para definir a lista de ficheiros original
-    public static void setOriginalFilesList(List<FileObject> originalFilesList) {
-        FileAdapter.originalFilesList = originalFilesList;
     }
 }
