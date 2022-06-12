@@ -10,7 +10,9 @@ public class FileObject implements Serializable {
 
     int id;
     boolean isPlaying;
-    String title, artist, duration;
+    String title;
+    String artist;
+    String duration;
     String uri;
     MediaItem mediaItem;
 
@@ -59,3 +61,10 @@ public class FileObject implements Serializable {
         isPlaying = playing;
     }
 }
+
+
+
+
+
+
+
