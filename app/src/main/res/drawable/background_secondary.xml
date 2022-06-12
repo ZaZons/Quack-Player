@@ -5,5 +5,4 @@
     <!--Definir a cor e o quão arredondados vão ser os vertices-->
     <solid android:color="?attr/colorSecondary"/>
     <corners android:radius="10dp"/>
-
 </shape>
