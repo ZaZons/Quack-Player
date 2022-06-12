@@ -22,16 +22,14 @@ public class PlaylistsFragment extends Fragment {
 
     Context context;
 
-    private FragmentPlaylistsBinding binding;
-
-    static File rootDir;
+    FragmentPlaylistsBinding binding;
 
     RecyclerView playlistsRecyclerView;
     RelativeLayout createPlaylist;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = this.getContext();
-        rootDir = new File(context.getFilesDir(), "Playlists");
+        File rootDir = new File(context.getFilesDir(), "Playlists");
 
         binding = FragmentPlaylistsBinding .inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -48,14 +46,13 @@ public class PlaylistsFragment extends Fragment {
         return root;
     }
 
-    public static File getRootDir() {
-        return rootDir;
-    };
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 }
+
+
+
 
