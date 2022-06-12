@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,7 +16,7 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
     static FileAdapter adapter;
     static List<FileObject> filesList;
 
-    RecyclerView filesInPlaylist;
+    RecyclerView playlistFilesRecyclerView;
     TextView text;
 
     @Override
@@ -33,7 +32,7 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        filesInPlaylist = findViewById(R.id.files);
+        playlistFilesRecyclerView = findViewById(R.id.playlistFilesRecyclerView);
         text = findViewById(R.id.infoPlaylist);
 
         List<FileObject> playlistObjects = (ArrayList<FileObject>) getIntent().getSerializableExtra("FilesList");
@@ -42,9 +41,9 @@ public class PlaylistActivity extends AppCompatActivity implements SelectFileLis
         if(playlistObjects != null) {
             adapter = new FileAdapter(this, playlistObjects, playlistName);
 
-            filesInPlaylist.setAdapter(adapter);
-            filesInPlaylist.setHasFixedSize(false);
-            filesInPlaylist.setLayoutManager(new LinearLayoutManager(this));
+            playlistFilesRecyclerView.setAdapter(adapter);
+            playlistFilesRecyclerView.setHasFixedSize(false);
+            playlistFilesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             NewMainActivity.setFileAdapter(adapter);
         } else {
             text.setVisibility(View.VISIBLE);
