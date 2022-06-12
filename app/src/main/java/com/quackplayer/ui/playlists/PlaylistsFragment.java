@@ -20,15 +20,17 @@ import java.io.File;
 
 public class PlaylistsFragment extends Fragment {
 
-    private FragmentPlaylistsBinding binding;
     Context context;
+
+    private FragmentPlaylistsBinding binding;
+
     static File rootDir;
+
     RecyclerView playlistsRecyclerView;
     RelativeLayout createPlaylist;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = this.getContext();
-
         rootDir = new File(context.getFilesDir(), "Playlists");
 
         binding = FragmentPlaylistsBinding .inflate(inflater, container, false);
@@ -56,24 +58,4 @@ public class PlaylistsFragment extends Fragment {
         binding = null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
