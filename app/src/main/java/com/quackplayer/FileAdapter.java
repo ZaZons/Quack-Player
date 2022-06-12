@@ -1,9 +1,7 @@
 package com.quackplayer;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,10 +66,10 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.FileViewHolder
         if(currentPlayingObject != null) {
             if(currentPlayingObject.getId() == selectedFile.getId()) {
                 selectedFile.setPlaying(true);
-                holder.rootLayout.setBackgroundResource(R.drawable.background_pink);
+                holder.rootLayout.setBackgroundResource(R.drawable.background_secondary);
             } else {
                 selectedFile.setPlaying(false);
-                holder.rootLayout.setBackgroundResource(R.drawable.background_blue);
+                holder.rootLayout.setBackgroundResource(R.drawable.background_primary);
             }
         }
 
