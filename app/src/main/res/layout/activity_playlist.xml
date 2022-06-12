@@ -22,7 +22,6 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/black"
                 app:popupTheme="@style/Theme.QuackPlayer.PopupOverlay"/>
-
         </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
 
