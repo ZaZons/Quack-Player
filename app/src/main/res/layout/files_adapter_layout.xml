@@ -49,15 +49,15 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="40dp"
-            android:background="@drawable/background_primary"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
-            android:text="00:00"
+            android:background="@drawable/background_primary"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="00:00"/>
 
         <ImageView
             android:id="@+id/options"
