@@ -47,7 +47,6 @@ public class PlaylistsAdapter extends RecyclerView.Adapter<PlaylistsAdapter.Play
         objectInXPlaylists = 0;
     }
 
-    @NonNull
     @Override
     public PlaylistsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new PlaylistsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.playlists_adapter_layout, null));
