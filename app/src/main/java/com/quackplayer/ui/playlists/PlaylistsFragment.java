@@ -52,7 +52,3 @@ public class PlaylistsFragment extends Fragment {
         binding = null;
     }
 }
-
-
-
-
