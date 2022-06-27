@@ -309,6 +309,7 @@ public class NewMainActivity extends AppCompatActivity implements SelectFileList
         Intent intent = new Intent(context, PlaybackService.class);
         stopService(intent);
         PlaybackService.setIsOn(false);
+        player.stop();
         player = null;
         finish();
     }
